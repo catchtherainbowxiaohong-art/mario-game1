@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{margin:0;overflow:hidden;background:#87ceeb}
+#game{width:100vw;height:100vh;display:block}
+.btn{
+position:fixed;
+bottom:20px;
+width:70px;
+height:70px;
+border-radius:20px;
+font-size:30px;
+border:none;
+background:#ffffffaa;
+}
+#left{left:20px}
+#right{left:110px}
+#jump{right:20px}
+</style>
+</head>
+<body>
+
+<canvas id="game"></canvas>
+
+<button id="left" class="btn">◀</button>
+<button id="right" class="btn">▶</button>
+<button id="jump" class="btn">⤒</button>
+
+<script>
+const c=document.getElementById("game");
+const ctx=c.getContext("2d");
+
+function resize(){
+c.width=innerWidth;
+c.height=innerHeight;
+}
+resize();
+addEventListener("resize",resize);
+
+let x=100,y=300,vy=0;
+let left=false,right=false;
+
+document.getElementById("left").ontouchstart=()=>left=true;
+document.getElementById("left").ontouchend=()=>left=false;
+
+document.getElementById("right").ontouchstart=()=>right=true;
+document.getElementById("right").ontouchend=()=>right=false;
+
+document.getElementById("jump").ontouchstart=()=>{
+if(y>=300)vy=-15;
+};
+
+function loop(){
+
+if(left)x-=5;
+if(right)x+=5;
+
+vy+=0.8;
+y+=vy;
+
+if(y>300){
+y=300;
+vy=0;
+}
+
+ctx.clearRect(0,0,c.width,c.height);
+
+ctx.fillStyle="red";
+ctx.fillRect(x,y,40,40);
+
+requestAnimationFrame(loop);
+}
+loop();
+</script>
+
+</body>
+</html>
